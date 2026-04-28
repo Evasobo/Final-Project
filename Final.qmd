@@ -1,0 +1,19 @@
+---
+title: "Final"
+format: html
+---
+
+```{r}
+#install.packages("bayesrules")
+library(bayesrules)
+data("moma")
+```
+
+```{r}
+#Clean the Data
+library(tidyverse)
+moma_clean <- moma %>%
+  drop_na()
+
+```
+
