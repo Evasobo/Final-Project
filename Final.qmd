@@ -92,3 +92,97 @@ var(moma_clean$count)
 # How does an artist’s living status (alive vs. deceased) relate to the number of works held in MoMA’s collection, after adjusting for gender, geographic origin, generation, and department?
 
 ### Q1: Does being dead or alive affect the timing of the first acquisition by MoMa?
+=======
+In a simple linear regression model, living artists are estimated to have approximately 29% fewer works in MoMA’s collection compared to deceased artists. This difference is statistically significant (p < 0.001). However, the model explains only a small proportion of variation (R² = 0.0165), suggesting that other factors contribute substantially to the number of works held by the museum.
+
+```{r}
+#full model including additional predictors
+moma_model2 <- lm(log(count) ~ alive + gender + region + department,
+  data = moma)
+summary(moma_model2)
+```
+
+```{r}
+#full model including generation of artist as a predictor
+moma_model3 <- lm(log(count) ~ alive + gender + region + department + genx,
+  data = moma)
+summary(moma_model2)
+```
+```{r}
+exp(-0.323)
+```
+```{r}
+(1-exp(-0.323)) *100
+```
+After adjusting for gender, region, department, and generation, living artists are estimated to have about 27–28% fewer works in MoMA’s collection than deceased artists, on average.
+```{r}
+gendermale = 0.095
+(exp(gendermale) -1)* 100
+
+```
+
+Male artists are estimated to have about 10% more works than female artists on average, holding generation, region, department and living status constant. This difference is statistically significant (p < 0.01).
+```{r}
+regionOther = -0.724 
+ ( 1 - exp(regionOther)) *100
+```
+There is limited evidence of systematic regional differences once other factors are controlled for, except for artists with unknown or less clearly categorized origins, who appear significantly underrepresented. Artists from “Other/Unknown” regions are estimated to have about 52% fewer works than those in the baseline region, holding other factors constant. This difference is statistically significant (p < 0.01). This may reflect structural marginalization in cataloging and recognition or data limitations. 
+
+Living artists are estimated to have approximately 27% fewer works in MoMA’s collection than deceased artists (p < 0.001). The magnitude of this effect remains largely unchanged after the inclusion of generational controls, suggesting that the observed difference is not driven solely by differences in artist age or career length.
+
+**Does the “alive vs deceased” gap differ between younger vs older artists?**
+```{r,include=FALSE}
+#introduce an interaction term between generation and being alive to see whether they are correlated
+moma_model4 <- lm(log(count) ~ alive * genx + gender + region + department, data = moma)
+summary(moma_model4)
+```
+We tested whether the relationship between living status and number of works varies across generational cohorts by including an interaction between living status and generation. The interaction term was not statistically significant, suggesting that the difference between living and deceased artists is consistent across generations.
+
+```{r,include=FALSE}
+# interaction between gender and department. Included this interaction in final reflection because it is statistically significant
+moma_model5 <- lm(log(count) ~ gender * department + alive + region + genx, data = moma)
+summary(moma_model5)
+```
+```{r,include=FALSE}
+g = -0.09728 + 0.31869 
+ ( exp(g) - 1)*100
+```
+
+
+We tested whether gender differences in representation vary across departments by including an interaction between gender and department. The interaction term for Drawings & Prints was statistically significant, indicating that the gender gap differs across artistic fields. Specifically, male artists have approximately 25% more works than female artists in Drawings & Prints, while no significant gender difference is observed in other departments.
+
+**Model Evaluation**
+
+Adding gender, region, and department substantially improved model fit relative to a simple baseline model as reflected in the increase in R^2, while the inclusion of generation and interaction terms resulted in only marginal improvements.
+```{r}
+model_comparison <- data.frame(
+  Model = c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5"),
+  Adj_R_squared = c(
+    summary(moma_model1)$adj.r.squared,
+    summary(moma_model2)$adj.r.squared,
+    summary(moma_model3)$adj.r.squared,
+    summary(moma_model4)$adj.r.squared,
+    summary(moma_model5)$adj.r.squared))
+
+model_comparison
+
+library(knitr)
+kable(model_comparison, caption = "Comparison of Model Fit (R-squared)")
+```
+
+```{r}
+# Started a check for Assumptions of linearity but i am not too confident in this. 
+library(performance)
+check_model(moma_model3)
+par(mfrow = c(2,2))
+plot(moma_model3)
+```
+Diagnostic plots suggest that the assumptions of linear regression are reasonably satisfied, particularly after applying a log transformation to the outcome variable. While minor deviations from normality and constant variance are present, they are not severe. No strong multicollinearity was detected, and influential observations were retained due to their substantive relevance.
+
+1893 observations with missing values were excluded from the analysis, resulting in a reduced sample size
+
+
+
+
+
+>>>>>>> 22cb727d9dd6e900fc9f917bf94a6152c4adbf99
