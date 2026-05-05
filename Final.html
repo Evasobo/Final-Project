@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.25">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Akinyi Ochieng, Eva Soboleva">
+
+<title>Analysis of Works of Art in the Museum of Modern Art as Factors of Gender, Living Status, Region, Generation and Department</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="Final_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Final_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="Final_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="Final_files/libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="Final_files/libs/quarto-html/popper.min.js"></script>
+<script src="Final_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Final_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Final_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Final_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Final_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Final_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Final_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Analysis of Works of Art in the Museum of Modern Art as Factors of Gender, Living Status, Region, Generation and Department</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Akinyi Ochieng, Eva Soboleva </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="section" class="level2">
+<h2 class="anchored" data-anchor-id="section"></h2>
+<section id="exploratory-plots" class="level3">
+<h3 class="anchored" data-anchor-id="exploratory-plots">Exploratory plots</h3>
+<p><strong>Figure 1: Distribution of log-transformed number of works by artistic department and gender. Noticeable variation exists across departments, with Drawings &amp; Prints and Photography showing higher dispersion. Within several departments, male artists tend to have slightly higher median counts than female artists, motivating interaction modeling.</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Final_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Figure 2:</strong></p>
+<p><strong>Distribution of log-transformed number of works in the MoMA collection by artist living status. Deceased artists exhibit slightly higher medians and greater variability compared to living artists, suggesting differences in long-term accumulation of works.</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Final_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Figure 3: Distribution of log-transformed number of works by geographic region. While Europe and North America show slightly higher medians and more extreme values, there is substantial overlap across regions, indicating limited regional separation after accounting for other factors.</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Final_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="model-1" class="level3">
+<h3 class="anchored" data-anchor-id="model-1">Model 1</h3>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = log(count) ~ alive, data = moma)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-1.3007 -0.9590 -0.2658  0.6504  7.2264 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  1.30074    0.01980   65.69   &lt;2e-16 ***
+aliveTRUE   -0.34175    0.02771  -12.34   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.319 on 9069 degrees of freedom
+  (1893 observations deleted due to missingness)
+Multiple R-squared:  0.0165,    Adjusted R-squared:  0.01639 
+F-statistic: 152.2 on 1 and 9069 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>aliveTRUE 
+ 28.94765 </code></pre>
+</div>
+</div>
+</section>
+<section id="model-2" class="level3">
+<h3 class="anchored" data-anchor-id="model-2">Model 2</h3>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = log(count) ~ alive + gender + region + department, 
+    data = moma)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.4072 -0.9920 -0.4036  0.6900  7.1834 
+
+Coefficients:
+                                                Estimate Std. Error t value
+(Intercept)                                      0.90869    0.13824   6.573
+aliveTRUE                                       -0.33443    0.02794 -11.968
+gendermale                                       0.09938    0.03510   2.831
+gendernon-binary                                 0.11729    0.74203   0.158
+regionAsia                                      -0.07092    0.13940  -0.509
+regionAustralia/Oceania                         -0.20281    0.22530  -0.900
+regionCentral America                            0.14161    0.37794   0.375
+regionEurope                                    -0.01608    0.13095  -0.123
+regionNorth America                              0.08864    0.13031   0.680
+regionOther/Unknown                             -0.71581    0.22074  -3.243
+regionSouth America                             -0.06131    0.14211  -0.431
+departmentarchitecture &amp; design - image archive -1.09670    1.28038  -0.857
+departmentdrawings &amp; prints                      0.51525    0.03730  13.815
+departmentfilm                                  -0.34874    0.08470  -4.117
+departmentfluxus collection                      1.31052    0.23989   5.463
+departmentmedia and performance                  0.02225    0.07299   0.305
+departmentpainting &amp; sculpture                  -0.50627    0.06491  -7.799
+departmentphotography                            0.35180    0.04530   7.766
+                                                Pr(&gt;|t|)    
+(Intercept)                                     5.19e-11 ***
+aliveTRUE                                        &lt; 2e-16 ***
+gendermale                                       0.00465 ** 
+gendernon-binary                                 0.87441    
+regionAsia                                       0.61093    
+regionAustralia/Oceania                          0.36804    
+regionCentral America                            0.70789    
+regionEurope                                     0.90229    
+regionNorth America                              0.49641    
+regionOther/Unknown                              0.00119 ** 
+regionSouth America                              0.66615    
+departmentarchitecture &amp; design - image archive  0.39172    
+departmentdrawings &amp; prints                      &lt; 2e-16 ***
+departmentfilm                                  3.87e-05 ***
+departmentfluxus collection                     4.81e-08 ***
+departmentmedia and performance                  0.76052    
+departmentpainting &amp; sculpture                  6.92e-15 ***
+departmentphotography                           9.01e-15 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.28 on 9053 degrees of freedom
+  (1893 observations deleted due to missingness)
+Multiple R-squared:  0.0759,    Adjusted R-squared:  0.07416 
+F-statistic: 43.74 on 17 and 9053 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="model-3" class="level3">
+<h3 class="anchored" data-anchor-id="model-3">Model 3</h3>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = log(count) ~ alive + gender + region + department + 
+    genx, data = moma)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.4007 -0.9909 -0.3973  0.6910  7.1847 
+
+Coefficients:
+                                                Estimate Std. Error t value
+(Intercept)                                      0.92286    0.13873   6.652
+aliveTRUE                                       -0.32339    0.02939 -11.004
+gendermale                                       0.09501    0.03528   2.693
+gendernon-binary                                 0.15056    0.74252   0.203
+regionAsia                                      -0.07968    0.13958  -0.571
+regionAustralia/Oceania                         -0.21449    0.22550  -0.951
+regionCentral America                            0.13613    0.37795   0.360
+regionEurope                                    -0.02696    0.13125  -0.205
+regionNorth America                              0.07575    0.13074   0.579
+regionOther/Unknown                             -0.72423    0.22084  -3.279
+regionSouth America                             -0.07365    0.14247  -0.517
+departmentarchitecture &amp; design - image archive -1.09362    1.28035  -0.854
+departmentdrawings &amp; prints                      0.51794    0.03736  13.863
+departmentfilm                                  -0.34633    0.08472  -4.088
+departmentfluxus collection                      1.30705    0.23990   5.448
+departmentmedia and performance                  0.03114    0.07336   0.424
+departmentpainting &amp; sculpture                  -0.50576    0.06491  -7.791
+departmentphotography                            0.35158    0.04530   7.761
+genxTRUE                                        -0.05514    0.04546  -1.213
+                                                Pr(&gt;|t|)    
+(Intercept)                                     3.05e-11 ***
+aliveTRUE                                        &lt; 2e-16 ***
+gendermale                                       0.00710 ** 
+gendernon-binary                                 0.83932    
+regionAsia                                       0.56813    
+regionAustralia/Oceania                          0.34154    
+regionCentral America                            0.71873    
+regionEurope                                     0.83726    
+regionNorth America                              0.56235    
+regionOther/Unknown                              0.00104 ** 
+regionSouth America                              0.60518    
+departmentarchitecture &amp; design - image archive  0.39304    
+departmentdrawings &amp; prints                      &lt; 2e-16 ***
+departmentfilm                                  4.39e-05 ***
+departmentfluxus collection                     5.22e-08 ***
+departmentmedia and performance                  0.67125    
+departmentpainting &amp; sculpture                  7.36e-15 ***
+departmentphotography                           9.35e-15 ***
+genxTRUE                                         0.22517    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.28 on 9052 degrees of freedom
+  (1893 observations deleted due to missingness)
+Multiple R-squared:  0.07605,   Adjusted R-squared:  0.07421 
+F-statistic: 41.39 on 18 and 9052 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>aliveTRUE 
+0.7236906 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>aliveTRUE 
+ 27.63094 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>gendermale 
+  9.967505 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>regionOther/Unknown 
+           51.53036 </code></pre>
+</div>
+</div>
+</section>
+<section id="model-4" class="level3">
+<h3 class="anchored" data-anchor-id="model-4">Model 4</h3>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = log(count) ~ alive * genx + gender + region + department, 
+    data = moma)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.4018 -0.9915 -0.3961  0.6897  7.1843 
+
+Coefficients:
+                                                Estimate Std. Error t value
+(Intercept)                                      0.92723    0.13886   6.678
+aliveTRUE                                       -0.32532    0.02950 -11.027
+genxTRUE                                        -0.29258    0.32113  -0.911
+gendermale                                       0.09512    0.03528   2.696
+gendernon-binary                                 0.14706    0.74255   0.198
+regionAsia                                      -0.08381    0.13970  -0.600
+regionAustralia/Oceania                         -0.21848    0.22557  -0.969
+regionCentral America                            0.13134    0.37802   0.347
+regionEurope                                    -0.03084    0.13136  -0.235
+regionNorth America                              0.07234    0.13082   0.553
+regionOther/Unknown                             -0.72864    0.22092  -3.298
+regionSouth America                             -0.07776    0.14258  -0.545
+departmentarchitecture &amp; design - image archive -1.09469    1.28038  -0.855
+departmentdrawings &amp; prints                      0.51819    0.03736  13.869
+departmentfilm                                  -0.34667    0.08473  -4.092
+departmentfluxus collection                      1.30714    0.23991   5.448
+departmentmedia and performance                  0.03114    0.07336   0.425
+departmentpainting &amp; sculpture                  -0.50572    0.06491  -7.791
+departmentphotography                            0.35134    0.04530   7.755
+aliveTRUE:genxTRUE                               0.24206    0.32408   0.747
+                                                Pr(&gt;|t|)    
+(Intercept)                                     2.57e-11 ***
+aliveTRUE                                        &lt; 2e-16 ***
+genxTRUE                                        0.362262    
+gendermale                                      0.007037 ** 
+gendernon-binary                                0.843017    
+regionAsia                                      0.548556    
+regionAustralia/Oceania                         0.332780    
+regionCentral America                           0.728259    
+regionEurope                                    0.814399    
+regionNorth America                             0.580294    
+regionOther/Unknown                             0.000977 ***
+regionSouth America                             0.585480    
+departmentarchitecture &amp; design - image archive 0.392592    
+departmentdrawings &amp; prints                      &lt; 2e-16 ***
+departmentfilm                                  4.32e-05 ***
+departmentfluxus collection                     5.21e-08 ***
+departmentmedia and performance                 0.671178    
+departmentpainting &amp; sculpture                  7.41e-15 ***
+departmentphotography                           9.77e-15 ***
+aliveTRUE:genxTRUE                              0.455137    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.28 on 9051 degrees of freedom
+  (1893 observations deleted due to missingness)
+Multiple R-squared:  0.0761,    Adjusted R-squared:  0.07416 
+F-statistic: 39.24 on 19 and 9051 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="model-5" class="level3">
+<h3 class="anchored" data-anchor-id="model-5">Model 5</h3>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = log(count) ~ gender * department + alive + region + 
+    genx, data = moma)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.3579 -0.9679 -0.3814  0.6888  7.2086 
+
+Coefficients: (8 not defined because of singularities)
+                                                                 Estimate
+(Intercept)                                                       1.09946
+gendermale                                                       -0.09728
+gendernon-binary                                                  0.09366
+departmentarchitecture &amp; design - image archive                  -1.07453
+departmentdrawings &amp; prints                                       0.24414
+departmentfilm                                                   -0.27997
+departmentfluxus collection                                       1.71233
+departmentmedia and performance                                  -0.08762
+departmentpainting &amp; sculpture                                   -0.53047
+departmentphotography                                             0.25217
+aliveTRUE                                                        -0.32216
+regionAsia                                                       -0.08080
+regionAustralia/Oceania                                          -0.20681
+regionCentral America                                             0.12445
+regionEurope                                                     -0.03425
+regionNorth America                                               0.07234
+regionOther/Unknown                                              -0.71644
+regionSouth America                                              -0.07821
+genxTRUE                                                         -0.05263
+gendermale:departmentarchitecture &amp; design - image archive             NA
+gendernon-binary:departmentarchitecture &amp; design - image archive       NA
+gendermale:departmentdrawings &amp; prints                            0.31869
+gendernon-binary:departmentdrawings &amp; prints                           NA
+gendermale:departmentfilm                                        -0.09856
+gendernon-binary:departmentfilm                                        NA
+gendermale:departmentfluxus collection                           -0.42894
+gendernon-binary:departmentfluxus collection                           NA
+gendermale:departmentmedia and performance                        0.10352
+gendernon-binary:departmentmedia and performance                       NA
+gendermale:departmentpainting &amp; sculpture                         0.01679
+gendernon-binary:departmentpainting &amp; sculpture                        NA
+gendermale:departmentphotography                                  0.09847
+gendernon-binary:departmentphotography                                 NA
+                                                                 Std. Error
+(Intercept)                                                         0.16246
+gendermale                                                          0.10174
+gendernon-binary                                                    0.74649
+departmentarchitecture &amp; design - image archive                     1.27967
+departmentdrawings &amp; prints                                         0.10558
+departmentfilm                                                      0.21032
+departmentfluxus collection                                         0.90980
+departmentmedia and performance                                     0.14316
+departmentpainting &amp; sculpture                                      0.17118
+departmentphotography                                               0.11782
+aliveTRUE                                                           0.02940
+regionAsia                                                          0.13951
+regionAustralia/Oceania                                             0.22542
+regionCentral America                                               0.37782
+regionEurope                                                        0.13120
+regionNorth America                                                 0.13068
+regionOther/Unknown                                                 0.22075
+regionSouth America                                                 0.14240
+genxTRUE                                                            0.04545
+gendermale:departmentarchitecture &amp; design - image archive               NA
+gendernon-binary:departmentarchitecture &amp; design - image archive         NA
+gendermale:departmentdrawings &amp; prints                              0.11241
+gendernon-binary:departmentdrawings &amp; prints                             NA
+gendermale:departmentfilm                                           0.22929
+gendernon-binary:departmentfilm                                          NA
+gendermale:departmentfluxus collection                              0.94307
+gendernon-binary:departmentfluxus collection                             NA
+gendermale:departmentmedia and performance                          0.16667
+gendernon-binary:departmentmedia and performance                         NA
+gendermale:departmentpainting &amp; sculpture                           0.18444
+gendernon-binary:departmentpainting &amp; sculpture                          NA
+gendermale:departmentphotography                                    0.12704
+gendernon-binary:departmentphotography                                   NA
+                                                                 t value
+(Intercept)                                                        6.768
+gendermale                                                        -0.956
+gendernon-binary                                                   0.125
+departmentarchitecture &amp; design - image archive                   -0.840
+departmentdrawings &amp; prints                                        2.312
+departmentfilm                                                    -1.331
+departmentfluxus collection                                        1.882
+departmentmedia and performance                                   -0.612
+departmentpainting &amp; sculpture                                    -3.099
+departmentphotography                                              2.140
+aliveTRUE                                                        -10.957
+regionAsia                                                        -0.579
+regionAustralia/Oceania                                           -0.917
+regionCentral America                                              0.329
+regionEurope                                                      -0.261
+regionNorth America                                                0.554
+regionOther/Unknown                                               -3.245
+regionSouth America                                               -0.549
+genxTRUE                                                          -1.158
+gendermale:departmentarchitecture &amp; design - image archive            NA
+gendernon-binary:departmentarchitecture &amp; design - image archive      NA
+gendermale:departmentdrawings &amp; prints                             2.835
+gendernon-binary:departmentdrawings &amp; prints                          NA
+gendermale:departmentfilm                                         -0.430
+gendernon-binary:departmentfilm                                       NA
+gendermale:departmentfluxus collection                            -0.455
+gendernon-binary:departmentfluxus collection                          NA
+gendermale:departmentmedia and performance                         0.621
+gendernon-binary:departmentmedia and performance                      NA
+gendermale:departmentpainting &amp; sculpture                          0.091
+gendernon-binary:departmentpainting &amp; sculpture                       NA
+gendermale:departmentphotography                                   0.775
+gendernon-binary:departmentphotography                                NA
+                                                                 Pr(&gt;|t|)    
+(Intercept)                                                      1.39e-11 ***
+gendermale                                                        0.33902    
+gendernon-binary                                                  0.90016    
+departmentarchitecture &amp; design - image archive                   0.40110    
+departmentdrawings &amp; prints                                       0.02078 *  
+departmentfilm                                                    0.18317    
+departmentfluxus collection                                       0.05986 .  
+departmentmedia and performance                                   0.54053    
+departmentpainting &amp; sculpture                                    0.00195 ** 
+departmentphotography                                             0.03235 *  
+aliveTRUE                                                         &lt; 2e-16 ***
+regionAsia                                                        0.56246    
+regionAustralia/Oceania                                           0.35892    
+regionCentral America                                             0.74187    
+regionEurope                                                      0.79406    
+regionNorth America                                               0.57987    
+regionOther/Unknown                                               0.00118 ** 
+regionSouth America                                               0.58284    
+genxTRUE                                                          0.24699    
+gendermale:departmentarchitecture &amp; design - image archive             NA    
+gendernon-binary:departmentarchitecture &amp; design - image archive       NA    
+gendermale:departmentdrawings &amp; prints                            0.00459 ** 
+gendernon-binary:departmentdrawings &amp; prints                           NA    
+gendermale:departmentfilm                                         0.66732    
+gendernon-binary:departmentfilm                                        NA    
+gendermale:departmentfluxus collection                            0.64924    
+gendernon-binary:departmentfluxus collection                           NA    
+gendermale:departmentmedia and performance                        0.53453    
+gendernon-binary:departmentmedia and performance                       NA    
+gendermale:departmentpainting &amp; sculpture                         0.92747    
+gendernon-binary:departmentpainting &amp; sculpture                        NA    
+gendermale:departmentphotography                                  0.43829    
+gendernon-binary:departmentphotography                                 NA    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.279 on 9046 degrees of freedom
+  (1893 observations deleted due to missingness)
+Multiple R-squared:  0.07771,   Adjusted R-squared:  0.07526 
+F-statistic: 31.76 on 24 and 9046 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="model-comparison" class="level3">
+<h3 class="anchored" data-anchor-id="model-comparison">Model Comparison</h3>
+<div class="cell">
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<caption>Comparison of Model Fit (Adjusted R-squared)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Model</th>
+<th style="text-align: right;">Adj_R_squared</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Model 1</td>
+<td style="text-align: right;">0.0163919</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Model 2</td>
+<td style="text-align: right;">0.0741613</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Model 3</td>
+<td style="text-align: right;">0.0742095</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Model 4</td>
+<td style="text-align: right;">0.0741643</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Model 5</td>
+<td style="text-align: right;">0.0752622</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><strong>Figure 4: Model diagnostic checks for Model 3, including residual distribution, homoscedasticity, normality, and influential observations.</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Final_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p><strong>Figure 5: Standard linear regression diagnostic plots for Model 3, including residuals vs fitted values, Q-Q plot, scale-location plot, and leverage diagnostics.</strong></p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Final_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="confidence-intervals" class="level3">
+<h3 class="anchored" data-anchor-id="confidence-intervals">Confidence Intervals</h3>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                                                      2.5 %      97.5 %
+(Intercept)                                      0.65091748  1.19479628
+aliveTRUE                                       -0.38099891 -0.26578379
+gendermale                                       0.02585148  0.16417798
+gendernon-binary                                -1.30494501  1.60606438
+regionAsia                                      -0.35329209  0.19393771
+regionAustralia/Oceania                         -0.65651711  0.22753644
+regionCentral America                           -0.60474348  0.87700105
+regionEurope                                    -0.28424634  0.23032680
+regionNorth America                             -0.18053396  0.33202928
+regionOther/Unknown                             -1.15712920 -0.29133605
+regionSouth America                             -0.35291882  0.20561242
+departmentarchitecture &amp; design - image archive -3.60340025  1.41616171
+departmentdrawings &amp; prints                      0.44470263  0.59117616
+departmentfilm                                  -0.51240743 -0.18025917
+departmentfluxus collection                      0.83678927  1.77731638
+departmentmedia and performance                 -0.11265771  0.17492934
+departmentpainting &amp; sculpture                  -0.63299892 -0.37851209
+departmentphotography                            0.26277938  0.44038090
+genxTRUE                                        -0.14426046  0.03397144</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>     2.5 %     97.5 % 
+-0.3809989 -0.2657838 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     2.5 %     97.5 % 
+0.02585148 0.16417798 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>    2.5 %    97.5 % 
+-1.157129 -0.291336 </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="report" class="level1">
+<h1>Report</h1>
+<section id="abstract" class="level3">
+<h3 class="anchored" data-anchor-id="abstract"><strong>Abstract</strong></h3>
+<p>The purpose of our analysis is to examine the relationship that artist characteristics specifically living status, gender and geographic origin, have on the number of works held in the collection of the Museum of Modern Art. Using publicly available MoMA artist data, we fit a series of multiple linear regression models with the log-transformed number of works as the response variable.</p>
+<p>We found evidence that living artists have significantly fewer works in the collection compared to deceased artists, even after controlling for gender, geographic region, generation, and department. Additionally, male artists are slightly overrepresented relative to female artists, though this difference varies across departments, with the largest disparity observed in Drawings and Prints. Regional differences were generally not statistically significant, with the exception of artists categorized as originating from “Other/Unknown” regions, who appear underrepresented.</p>
+<p>Overall, our results suggest that representation within the museum’s collection is shaped by artist characteristics and structural factors such as departmental classification, and that disparities persist even after accounting for generational differences.</p>
+</section>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction"><strong>Introduction</strong></h3>
+<p>Cultural institutions such as museums play a central role in shaping cultural discourse and public understanding of art. Museums do not simply display art; they actively construct meaning and cultural value [@duncan1995]. The Museum’s evolving collection contains almost 200,000 works from around the world spanning the last 150 years. Collections like those of the Museum of Modern Art (MoMA) not only reflect artistic production but also institutional decisions about which artists and works are preserved, exhibited, and valued. As a result, patterns within museum collections can provide insight into questions of representation, recognition, and structural inequality in the art world. This aligns with the idea that “cultural institutions contribute to the reproduction of social hierarchies” [@bourdieu1984]</p>
+<p>Prior research has shown that “the question of women’s absence from the canon is not about individual ability, but about institutional structures and opportunities” [@nochlin1971]. However, less attention has been given to how these disparities interact with institutional factors such as departmental classification and artist career stage. Artists working in different media may be collected in systematically different ways, and representation may also vary depending on an artist’s stage of life or career. Understanding these dynamics is important for distinguishing differences in artistic output from institutional selection processes.</p>
+<p>In this project, we examine how the number of works held by MoMA varies with artist characteristics, including living status, gender, and geographic origin. We ask whether female artists have fewer works than male artists on average, whether artists from certain regions are underrepresented, and whether these patterns persist after accounting for generation and departmental differences.</p>
+<p>We test two main hypotheses. First, we hypothesize that living artists have fewer works in the collection than deceased artists. Second, we hypothesize that gender differences exist in the number of works held, and that these differences vary across departments. To explore this further, we incorporate interaction terms to assess whether representation differs systematically across artistic fields. Because the outcome variable is a count (number of works), a natural modeling approach would be count regression models such as Poisson or negative binomial regression. However, the data exhibit substantial right-skewness and overdispersion, violating key assumptions of the Poisson model. We therefore apply a log transformation to the outcome and estimate linear regression models as an approximation.</p>
+<p>The log transformation reduces skewness and stabilizes variance, making the linear model assumptions more plausible. Under this specification, coefficients can be interpreted approximately as percentage differences in the expected number of works across groups.</p>
+<p>We evaluate model assumptions using standard diagnostic plots <strong>(Figures 4 and 5)</strong>. Residuals versus fitted values show no strong evidence of systematic structure, suggesting that the linearity assumption is reasonable. The scale-location plot indicates some heteroscedasticity at extreme fitted values, though this is substantially reduced by the log transformation. Q-Q plots show approximate normality of residuals with mild deviations in the tails. Influence diagnostics (leverage and Cook’s distance) identify a small number of potentially influential observations, but excluding these observations does not meaningfully change the results. Overall, the model assumptions are reasonably satisfied for inference, though not perfectly met. All analyses were conducted in R and are fully reproducible using the provided Quarto (.qmd) file, including data cleaning, model fitting, and visualization steps.</p>
+</section>
+<section id="data" class="level3">
+<h3 class="anchored" data-anchor-id="data"><strong>Data</strong></h3>
+<p>The dataset used in this analysis consists of publicly available artist-level data from the Museum of Modern Art (MoMA) [@moma_collection], accessed through the bayesrules package in R. The Museum’s website features 107,593 artworks from 28,332 artists. The data set was accessed through the <em>RDatasets</em> archive [@rdatasets]. The original dataset contains 10,964 artists and includes information on the number of works attributed to each artist, gender, country of origin, departmental classification, living status, and generation (born before or after 1965).</p>
+<p>After restricting the sample to observations with complete data on the variables used in the analysis (including gender, region, department, living status, and generation), the final analytic sample consists of 9,000 artists. This research dataset contains 160,713 records, representing all of the works that have been accessioned into MoMA’s collection and cataloged in our database. This reduction is primarily driven by missing values in categorical variables such as gender and geographic origin.</p>
+<p>We use listwise deletion to handle missing data, ensuring consistency across all model specifications. While this approach simplifies estimation and interpretation, it substantially reduces the sample size and may introduce bias if the missingness is not random.</p>
+</section>
+<section id="variables" class="level3">
+<h3 class="anchored" data-anchor-id="variables"><strong>Variables</strong></h3>
+<p>The response variable in this analysis is the number of works attributed to each artist in the Museum of Modern Art (MoMA) collection. We apply a logarithmic transformation to this variable, modeling log(count), in order to reduce skewness and improve adherence to linear regression assumptions.</p>
+<p>The explanatory variables included in the analysis are as follows:</p>
+<p><strong>Living status (alive):</strong> A binary indicator equal to 1 if the artist is living and 0 if deceased.</p>
+<p><strong>Gender (gender):</strong> A categorical variable with levels male, female, and non-binary, used to assess differences in representation across gender categories.</p>
+<p><strong>Geographic region (region):</strong> A categorical variable derived from country of origin and grouped into broader regions (e.g., Europe, Asia, Africa, North America), allowing for comparison across geographic groupings.</p>
+<p><strong>Generation (genx):</strong> A binary indicator for whether an artist was born before or after 1965, used as a proxy for career stage and generational cohort.</p>
+<p><strong>Department (department):</strong> A categorical variable indicating the artistic department (e.g., Painting &amp; Sculpture, Photography, Drawings &amp; Prints), capturing institutional differences in how works are collected and classified.</p>
+</section>
+<section id="model-choice" class="level3">
+<h3 class="anchored" data-anchor-id="model-choice"><strong>Model Choice</strong></h3>
+<p>A log transformation is commonly used in applied regression settings to address skewness in count-like outcomes. Thus, we estimate a sequence of multiple linear regression models with log(count) as the outcome variable. The models are constructed in increasing complexity, beginning with a baseline specification that includes only living status and progressively adding additional covariates to control for potential confounding factors.</p>
+<p>Subsequent models incorporate gender, geographic region, department, and generation to account for observable differences in artist characteristics and institutional classification. This stepwise approach allows us to assess the robustness of key relationships as additional controls are introduced.</p>
+<p>To examine heterogeneity in effects across institutional contexts, we also estimate interaction models. In particular, we include an interaction between gender and department to assess whether gender differences in representation vary across artistic fields.</p>
+<p>The full set of models is specified as follows:</p>
+<p><strong>Model 1:</strong> living status only</p>
+<p><strong>Model 2:</strong> adds gender, region, and department</p>
+<p><strong>Model 3:</strong> adds generation</p>
+<p><strong>Model 4:</strong> includes an interaction between living status and generation</p>
+<p><strong>Model 5:</strong> includes an interaction between gender and department</p>
+</section>
+<section id="exploratory-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="exploratory-analysis"><strong>Exploratory Analysis</strong></h3>
+<p>To better understand the distribution of the outcome variable and relationships between key predictors, we constructed several exploratory visualizations.</p>
+<p>A boxplot of the number of works by living status (on a log scale) <strong>(Figure 2)</strong> indicates that deceased artists have slightly higher median counts and greater variability than living artists, along with a larger number of high-value outliers. This pattern provides preliminary support for the hypothesis that deceased artists are more extensively represented in the MoMA collection.</p>
+<p>A boxplot by geographic region <strong>(Figure 3)</strong> shows that artists from Europe and North America generally have higher median counts and more extreme outliers compared to other regions. However, there is substantial overlap in distributions across regions, suggesting that geographic differences may be modest once other covariates are taken into account.</p>
+<p>Finally, a boxplot of counts by department and gender <strong>(Figure 1)</strong> reveals substantial variation across institutional categories. Departments such as Drawings &amp; Prints and Photography exhibit higher dispersion and larger counts overall. Within several departments, male artists tend to have slightly higher median counts than female artists, particularly in Drawings &amp; Prints. These patterns motivate the inclusion of interaction terms between gender and department in subsequent regression models.</p>
+</section>
+<section id="results" class="level3">
+<h3 class="anchored" data-anchor-id="results">Results</h3>
+<p>We estimated a series of linear regression models with the log-transformed number of works in the MoMA collection as the outcome variable. Our primary model (Model 3) includes living status, gender, geographic region, department, and generation as explanatory variables.</p>
+<p>After adjusting for all covariates, living status is strongly associated with representation in the collection. The coefficient on <em>alive</em> is −0.323 (p &lt; 0.001), indicating that, on average, living artists have approximately <strong>28% fewer works</strong> in the collection than deceased artists (95% CI: 23% to 32% fewer), holding all other variables constant. This is the largest and most consistent effect across all model specifications.</p>
+<p>Gender is also associated with differences in representation. The coefficient for male artists is 0.095 (p = 0.007), corresponding to approximately <strong>10% more works</strong> compared to female artists (95% CI: 3% to 18% more), controlling for other factors. The coefficient for non-binary artists is not statistically distinguishable from zero and is estimated imprecisely, likely due to the small number of observations in this category.</p>
+<p>Geographic region shows limited evidence of systematic differences after adjustment. Most regional coefficients are not statistically significant, and their confidence intervals include zero. However, artists categorized as originating from “Other/Unknown” regions have significantly lower representation (−0.724, p = 0.001), corresponding to approximately <strong>52% fewer works</strong> relative to the reference region. This suggests that incomplete or ambiguous geographic classification is associated with substantially lower representation.</p>
+<p>Departmental differences are large in magnitude and highly statistically significant, indicating substantial variation in how works are accumulated across artistic media. Relative to the reference department, artists in Drawings &amp; Prints and Photography have significantly higher expected counts, while those in Painting &amp; Sculpture have lower counts. These differences likely reflect institutional acquisition practices, such as the tendency for certain media (e.g., prints or photographs) to be collected in multiples.</p>
+<p>The coefficient for generation (genx) is not statistically significant (p = 0.225), and its confidence interval includes zero, suggesting no strong evidence of generational differences in representation once other covariates are taken into account.</p>
+<p>To examine whether gender differences vary across institutional contexts, we estimated an interaction model between gender and department (Model 5). The interaction between male gender and Drawings &amp; Prints is positive and statistically significant (p = 0.005), indicating that the gender gap is larger in this department than in the reference category. Specifically, within Drawings &amp; Prints, male artists are estimated to have approximately <strong>25% more works</strong> than female artists, after controlling for other variables. No statistically significant gender differences are detected in other departments, suggesting that gender disparities are concentrated within specific areas of the collection rather than uniform across all media.</p>
+<p>Model fit improves substantially as additional covariates are included. The adjusted R² increases from 0.016 in the baseline model (Model 1) to approximately 0.074 in Models 2–4 and 0.075 in Model 5. While this represents a meaningful improvement, the overall explanatory power remains modest, indicating that a large proportion of variation in the number of works is not explained by the observed variables.</p>
+<p>Overall, these results indicate that representation in the MoMA collection is strongly associated with living status and varies across gender and department, while geographic region and generation play a more limited role after adjustment. Importantly, the concentration of gender differences within specific departments highlights the importance of institutional context in shaping patterns of representation.</p>
+</section>
+<section id="discussion" class="level3">
+<h3 class="anchored" data-anchor-id="discussion"><strong>Discussion</strong></h3>
+<p>In our primary analysis, we examined whether artist characteristics such as living status, gender, and geographic origin are associated with representation in the collection of the Museum of Modern Art. Our results provide strong evidence that living artists have fewer works in the collection than deceased artists, even after controlling for gender, region, generation, and department. This finding is consistent with the idea that museum collections accumulate works over time and that artists may gain recognition and institutional visibility posthumously.</p>
+<p>Across all models, explanatory power increases substantially after adding covariates (Adjusted R² increases from 0.016 in Model 1 to ~0.075 in full models). However, the overall R² remains low, suggesting that a large proportion of variation in the number of works is not explained by the included predictors.</p>
+<p>We also find evidence of a modest gender disparity in representation, with male artists having approximately 10% more works than female artists on average. Importantly, this disparity is not uniform across artistic fields. Our interaction analysis shows that the gender gap is concentrated in specific departments, particularly Drawings &amp; Prints, suggesting that structural differences across media play an important role in shaping representation.</p>
+<p>In contrast, we find limited evidence of systematic regional differences once other factors are controlled for. The only exception is the “Other/Unknown” category, which is associated with significantly fewer works. This may reflect limitations in data classification or broader patterns of marginalization in how artists are documented and recognized.</p>
+<p>Our analysis also indicates that generational differences do not independently explain variation in representation once living status is taken into account. This suggests that the observed differences between living and deceased artists are not solely driven by age or career stage, but may instead reflect institutional dynamics such as acquisition patterns, career length, and posthumous recognition.</p>
+<p>Several limitations should be noted. First, the use of a linear regression model on log-transformed count data is an approximation; alternative models such as Poisson or negative binomial regression may be more appropriate. Second, observations with missing data were excluded, which may introduce bias if missingness is not random. Future work could also consider artist level random effects or hierarchical models to account for clustering within departments.</p>
+<p>Overall, our findings suggest that representation within museum collections is shaped by a combination of artist characteristics and institutional structures, and that disparities persist even after accounting for observable factors. Further research is needed to better understand the mechanisms driving these patterns and what solutions have been put in place to address these issues.</p>
+</section>
+<section id="limitations-and-looking-forward" class="level3">
+<h3 class="anchored" data-anchor-id="limitations-and-looking-forward"><strong>Limitations and Looking Forward</strong></h3>
+<p>Our model assumes a uniform relationship across artists within each category, which likely oversimplifies institutional collecting processes. In particular, differences in departmental practices—for example, the tendency for prints and photography to be acquired in larger multiples—suggest substantial heterogeneity in how works are accumulated across media. While we include department as a categorical control, more flexible specifications that better capture within-department variation may improve model fit.</p>
+<p>Diagnostic checks suggest that linear regression assumptions are broadly reasonable after log transformation, although some departures from normality and constant variance remain in the tails. The relatively low R² values indicate that most variation in the number of works is not explained by the observed covariates. This is not unexpected, as museum acquisition patterns are likely shaped by additional unobserved factors such as exhibition history, curatorial decision-making, and broader historical context, which are not captured in the dataset.</p>
+<p>Future research could extend this analysis to multiple museum collections to assess whether these patterns are specific to MoMA or reflect broader institutional dynamics in contemporary art curation. Such comparative work would help distinguish museum-specific acquisition practices from more general structural inequalities in how artists are represented across institutions.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Arel-Bundock, V. (n.d.). <em>Rdatasets: Collection of datasets for statistical analysis in R</em>. <a href="https://vincentarelbundock.github.io/Rdatasets/datasets.html" class="uri">https://vincentarelbundock.github.io/Rdatasets/datasets.html</a></p>
+<p>Bourdieu, P. (1984). <em>Distinction: A social critique of the judgement of taste</em>. Harvard University Press.</p>
+<p>Duncan, C. (1995). <em>Civilizing rituals: Inside public art museums</em>. Routledge.</p>
+<p>Museum of Modern Art. (n.d.). <em>MoMA Collection Dataset</em>. <a href="https://github.com/MuseumofModernArt/collection" class="uri">https://github.com/MuseumofModernArt/collection</a></p>
+<p>Nochlin, L. (1971). Why have there been no great women artists? <em>ARTnews</em>.</p>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

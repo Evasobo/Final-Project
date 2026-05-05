@@ -3,137 +3,92 @@ title: "Analysis of Works of Art in the Museum of Modern Art as Factors of Gende
 author: "Akinyi Ochieng, Eva Soboleva"
 format: html
 
+bibliography: references.bib
+
 execute: 
   echo: false
   warning: false
   message: false
 ---
 
-## Clean Data
+## 
 
 ```{r}
-#install.packages("bayesrules")
+#Clean Data plus Set up
 library(bayesrules)
 data("moma")
 library(tidyverse)
-```
 
-
-**Abstract**
-
-The purpose of our analysis is to examine the relationship that artist characteristics specifically living status, gender and geographic origin, have on the number of works held in the collection of the Museum of Modern Art. Using publicly available MoMA artist data, we fit a series of multiple linear regression models with the log-transformed number of works as the response variable.
-
-We found evidence that living artists have significantly fewer works in the collection compared to deceased artists, even after controlling for gender, geographic region, generation, and department. Additionally, male artists are slightly overrepresented relative to female artists, though this difference varies across departments, with the largest disparity observed in Drawings and Prints. Regional differences were generally not statistically significant, with the exception of artists categorized as originating from “Other/Unknown” regions, who appear underrepresented.
-
-Overall, our results suggest that representation within the museum’s collection is shaped by artist characteristics and structural factors such as departmental classification, and that disparities persist even after accounting for generational differences. 
-
-**Introduction**
-
-Cultural institutions such as museums play a central role in shaping cultural discourse and public understanding of art. Collections like those of the Museum of Modern Art not only reflect artistic production; they also embody institutional decisions about which artists and works are preserved, exhibited and valued. As a result, examining patterns within museum collections can provide insight into broader questions of representation, recognition and structural inequality in the art world.
-
-While prior discussions of inequality in the arts often focus on gender, less attention has been given to how these factors interact with institutional structures such as departmental classification and artist career stage. For instance, artists working in different media may be collected differently, and artists at different points in their careers may have varying levels of representation in major collections. Understanding these dynamics is important for evaluating whether observed disparities reflect differences in artistic production, institutional practices or broader historical patterns.
-
-Rather than broadly examining representation in museum collections, we investigate how the number of works held by MoMA varies based on artist characteristics such as living status, gender, and geographic origin. Specifically, we ask: Do female artists have fewer works than male artists on average? Are artists from certain regions underrepresented? And do these patterns persist after accounting for generational differences and departmental variation?
-
-This project tests two primary hypotheses. First, we hypothesize that living artists will have fewer works in the collection than deceased artists, reflecting differences in career length and posthumous recognition. Second, we hypothesize that gender disparities exist in the number of works held, and that these disparities may vary across departments. By incorporating interaction terms, we further explore whether representation differs across artistic fields, providing a more nuanced understanding of inequality within museum collections.
-
-***Methods***
-
-**Data**
-
-The dataset used in this analysis consists of publicly available artist-level data from the Museum of Modern Art, accessed through the bayesrules package in R. The dataset includes information on individual artists represented in MoMA’s collection, including the number of works attributed to each artist, gender, country of origin, departmental classification,whether the artist was born before 1965 or after, year their first artwork was acquired and indicators of whether the artist is living or deceased.
-
-Missing values were present for several variables, including gender and geographic origin. Observations with missing values in variables used in the analysis were excluded, resulting in a reduced sample size relative to the original dataset. While this approach simplifies analysis, it may introduce bias if missingness is not random.
-
-**Variables**
-
-The response variable in this analysis is the number of works attributed to each artist in MoMA’s collection. Because this variable is highly right-skewed, we applied a log transformation, modeling log(count) to better satisfy the assumptions of linear regression.
-
-We included several explanatory variables:
-
-    1) Living status (alive): a binary variable indicating whether an artist is living or deceased. 
-
-    2)Gender (gender): categorized as male, female or non-binary. This variable allows us to examine gender-based differences in representation.
-
-    3)Geographic region (region): derived from the artist’s country of origin and grouped into broader regions (e.g., Europe, Asia, Africa, North America). This simplifies analysis and enables comparisons across geographic categories.
-
-    4)Generation (genx): a binary variable indicating whether an artist was born before or after 1965. This variable captures generational differences that may influence career length and institutional recognition.
-
-    5)Department (department): a categorical variable representing the artistic department (e.g., Painting & Sculpture, Photography, Drawings & Prints). This variable captures structural differences in how works are collected and categorized.
-
-***Model Choice***
-
-We fit a sequence of multiple linear regression models with log(count) as the response variable. The baseline model includes only living status, while subsequent models incorporate gender, geographic region, department and generation to control for potential confounding factors.
-
-To further explore whether relationships vary across contexts, we also estimated interaction models. In particular, we included an interaction between gender and department to test whether gender disparities differ across artistic fields. This allows us to assess whether representation is uniform or concentrated within specific areas of the collection.
-
-We use a linear regression framework with a log-transformed response to approximate normality and stabilize variance.
-
-***Results***
-
-Fitting a multiple linear regression model with log-transformed number of works as the response and living status, gender, region, department, and generation as explanatory variables produces a model with an intercept of 0.923 and a coefficient on `aliveTRUE` of −0.323. These coefficients indicate that, holding all other variables constant, we would expect a deceased artist in the baseline categories to have an average of 2 works.
-
-The coefficient on `aliveTRUE` is statistically significant (p < 0.001), suggesting strong evidence of a relationship between living status and representation in the collection. Converting from the log scale, this coefficient implies that living artists are expected to have approximately ( e^{-0.323} \approx 0.72 ) times as many works as deceased artists, or about **28% fewer works on average**, controlling for gender, region, department and generation.
-
-The coefficient on `gendermale` is estimated at 0.095 (p = 0.007), indicating that male artists have approximately ( e^{0.095} \approx 1.10 ), or about **10% more works** than female artists on average, holding other variables constant. The coefficient for non-binary artists is not statistically significant, likely due to small sample size.
-
-Most regional indicators are not statistically significant, suggesting limited evidence of systematic differences across regions once other factors are controlled for. However, the coefficient for artists categorized as originating from “Other/Unknown” regions is negative and statistically significant (−0.724, p = 0.001), indicating that these artists have approximately **52% fewer works** than those in the baseline region.
-
-Departmental differences are large and highly significant. For example, artists in Drawings & Prints have substantially more works on average, while those in Painting & Sculpture have fewer works, relative to the baseline department. These results indicate that the number of works attributed to an artist varies considerably across artistic media.
-
-The coefficient on `genxTRUE` is not statistically significant (p = 0.225), suggesting that, after controlling for other factors, there is no strong evidence that artists born after 1965 differ in the number of works held in the collection.
-
-To further examine whether gender disparities vary across artistic fields, we estimated a model including an interaction between gender and department. The interaction between male gender and the Drawings & Prints department is positive and statistically significant (p = 0.005), indicating that gender differences are not uniform across departments. In particular, male artists have approximately **25% more works** than female artists within Drawings & Prints, while no significant gender differences are observed in other departments.
-
-***Discussion***
-
-In our primary analysis, we examined whether artist characteristics such as living status, gender, and geographic origin are associated with representation in the collection of the Museum of Modern Art. Our results provide strong evidence that living artists have fewer works in the collection than deceased artists, even after controlling for gender, region, generation, and department. This finding is consistent with the idea that museum collections accumulate works over time and that artists may gain recognition and institutional visibility posthumously.
-
-We also find evidence of a modest gender disparity in representation, with male artists having approximately 10% more works than female artists on average. Importantly, this disparity is not uniform across artistic fields. Our interaction analysis shows that the gender gap is concentrated in specific departments, particularly Drawings & Prints, suggesting that structural differences across media play an important role in shaping representation.
-
-In contrast, we find limited evidence of systematic regional differences once other factors are controlled for. The only exception is the “Other/Unknown” category, which is associated with significantly fewer works. This may reflect limitations in data classification or broader patterns of marginalization in how artists are documented and recognized.
-
-Our analysis also indicates that generational differences do not independently explain variation in representation once living status is taken into account. This suggests that the observed differences between living and deceased artists are not solely driven by age or career stage, but may instead reflect institutional dynamics such as acquisition practices.
-
-Several limitations should be noted. First, the use of a linear regression model on log-transformed count data is an approximation; alternative models such as Poisson or negative binomial regression may be more appropriate. Second, observations with missing data were excluded, which may introduce bias if missingness is not random. 
-
-Overall, our findings suggest that representation within museum collections is shaped by a combination of artist characteristics and institutional structures, and that disparities persist even after accounting for observable factors. Further research is needed to better understand the mechanisms driving these patterns and what solutions have been put in place to address these issues.
-
-***Limitations and Looking Forward***
-Our model assumes a uniform relationship across all artists within each category, which may oversimplify complex institutional processes. For example, differences in departmental practices such as the tendency for certain media (e.g., prints or photography) to be collected in larger quantities suggest that structural factors play a significant role in shaping the outcome variable. While we account for department as a categorical predictor, more nuanced modeling of these institutional dynamics may be warranted.
-
-From a statistical perspective, diagnostic checks indicated that the assumptions of linear regression were reasonably satisfied after log transformation, though minor deviations from normality and constant variance remained. Furthermore, the overall explanatory power of the models was modest, with relatively low R² values, suggesting that a substantial portion of variation in the number of works remains unexplained. This indicates that additional variables such as exhibition history, curatorial priorities or historical context may be important predictors but are not captured in the dataset.
-
-Looking forward, future research could extend this analysis by conducting similar analyses across multiple museums to help determine whether these findings reflect broader trends in the art world or are specific to the Museum of Modern Art.
-
-**Data Exploration**
-```{r}
-# Reclassifying artists origin into regions
-moma <- moma |>
+# Reclassify regions (ONE clean version)
+moma <- moma %>%
   mutate(
     region = case_when(
-      country %in% c("american", "canadian", "mexican","cuban","haitian", "canadian inuit","bahamian","native american" ) ~ "North America",
-      country %in% c("costa rican","guatemalan","panamanian","nicaraguan","salvadoran") ~ "Central America",
-      country %in% c("french", "german", "italian", "spanish","bosnian", "british","luxembourgish","icelandic", "ukrainian","swiss", "austrian", "irish", "norwegian","scottish","greek","yugoslav","belgian","finnish","danish","swedish","slovenian","latvian","dutch","czech","czechoslovakian","russian","polish","croatian","hungarian","romanian","portuguese","estonian","bulgarian","georgian","albanian","serbian","lithuanian","slovak") ~ "Europe",
-      country %in% c("chinese","thai", "japanese", "indian", "korean", "iranian", "turkish","israeli", "kuwaiti","cambodian","pakistani","palestinian","taiwanese","lebanese",
-                     "azerbaijani","malaysian","afghan","singaporean","macedonian",
-                     "bangladeshi") ~ "Asia",
-      country %in% c("brazilian", "argentine", "chilean", "colombian","filipino","emirati", "uruguayan","ecuadorian","peruvian","venezuelan","bolivian","paraguayan","guyanese") ~ "South America",
-      country %in% c("south african","sudanese", "algerian", "nigerian","malian", "kenyan", "egyptian", "moroccan","tanzanian", "ghanaian","ivorian","namibian","ugandan", "cameroonian","ethiopian","zimbabwean","senegalese", "congolese","burkinabe","beninese","sierra leonean") ~ "Africa",
+      country %in% c("american", "canadian", "mexican","cuban","haitian",
+                     "canadian inuit","bahamian","native american") ~ "North America",
+      
+      country %in% c("costa rican","guatemalan","panamanian",
+                     "nicaraguan","salvadoran") ~ "Central America",
+      
+      country %in% c("french", "german", "italian", "spanish","bosnian",
+                     "british","luxembourgish","icelandic", "ukrainian",
+                     "swiss", "austrian", "irish", "norwegian","scottish",
+                     "greek","yugoslav","belgian","finnish","danish",
+                     "swedish","slovenian","latvian","dutch","czech",
+                     "czechoslovakian","russian","polish","croatian",
+                     "hungarian","romanian","portuguese","estonian",
+                     "bulgarian","georgian","albanian","serbian",
+                     "lithuanian","slovak") ~ "Europe",
+      
+      country %in% c("chinese","thai", "japanese", "indian", "korean",
+                     "iranian", "turkish","israeli", "kuwaiti","cambodian",
+                     "pakistani","palestinian","taiwanese","lebanese",
+                     "azerbaijani","malaysian","afghan","singaporean",
+                     "macedonian","bangladeshi") ~ "Asia",
+      
+      country %in% c("brazilian", "argentine", "chilean", "colombian",
+                     "filipino","emirati", "uruguayan","ecuadorian",
+                     "peruvian","venezuelan","bolivian","paraguayan",
+                     "guyanese") ~ "South America",
+      
+      country %in% c("south african","sudanese", "algerian", "nigerian",
+                     "malian", "kenyan", "egyptian", "moroccan",
+                     "tanzanian", "ghanaian","ivorian","namibian",
+                     "ugandan", "cameroonian","ethiopian","zimbabwean",
+                     "senegalese", "congolese","burkinabe","beninese",
+                     "sierra leonean") ~ "Africa",
+      
       country %in% c("australian", "new zealander") ~ "Australia/Oceania",
+      
       TRUE ~ "Other/Unknown"
-    )
+    ),
+    
+    # Ensure categorical variables are factors
+    gender = factor(gender),
+    alive = factor(alive),
+    region = factor(region),
+    department = factor(department),
+    genx = factor(genx)
   )
 ```
 
+### Exploratory plots
+
+**Figure 1: Distribution of log-transformed number of works by artistic department and gender. Noticeable variation exists across departments, with Drawings & Prints and Photography showing higher dispersion. Within several departments, male artists tend to have slightly higher median counts than female artists, motivating interaction modeling.**
 
 ```{r}
-#Exploratory plot 1
+# By department and gender
 ggplot(moma, aes(y = department, x = count, fill = gender)) +
-  geom_boxplot() + scale_x_log10()
+  geom_boxplot() +
+  scale_x_log10()
+
 ```
 
+**Figure 2:**
+
+**Distribution of log-transformed number of works in the MoMA collection by artist living status. Deceased artists exhibit slightly higher medians and greater variability compared to living artists, suggesting differences in long-term accumulation of works.**
+
 ```{r}
+# By living status
 ggplot(moma, aes(x = alive, y = count)) +
   geom_boxplot() +
   scale_y_log10() +
@@ -142,8 +97,13 @@ ggplot(moma, aes(x = alive, y = count)) +
     y = "Number of Works in MoMA Collection",
     title = "Number of Works by Artist Living Status"
   )
+
 ```
+
+**Figure 3: Distribution of log-transformed number of works by geographic region. While Europe and North America show slightly higher medians and more extreme values, there is substantial overlap across regions, indicating limited regional separation after accounting for other factors.**
+
 ```{r}
+# By region
 ggplot(moma, aes(x = region, y = count)) +
   geom_boxplot() +
   scale_y_log10() +
@@ -155,158 +115,60 @@ ggplot(moma, aes(x = region, y = count)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
+### Model 1
 
 ```{r}
-table(moma$alive)
-```
-
-```{r}
-#simple model testing the effect of being alive on count of artworks
-moma_model1 <- lm(log(count)~ alive,data = moma)
+moma_model1 <- lm(log(count) ~ alive, data = moma)
 summary(moma_model1)
-```
-```{r}
-#interpreting beta1
-(1 - exp(-0.34175)) *100
 
+# Percent difference
+(1 - exp(coef(moma_model1)["aliveTRUE"])) * 100
 ```
 
-<<<<<<< HEAD
-```{r}
-#install.packages("countrycode")  # run once
-library(countrycode)
-```
+### Model 2
 
 ```{r}
-moma_clean <- moma_clean %>%
-  mutate(region = case_when(
-    
-    # 🌎 North America
-    country %in% c("american", "canadian", "canadian inuit", "mexican", "costa rican",
-                   "cuban", "guatemalan", "haitian", "nicaraguan", "salvadoran",
-                   "panamanian", "bahamian", "brazilian", "brazilian", "bahamian") ~ "North America",
-    
-    # 🌎 South America
-    country %in% c("argentine", "bolivian", "chilean", "colombian", "ecuadorian",
-                   "guyanese", "paraguayan", "peruvian", "uruguayan", "venezuelan") ~ "South America",
-    
-    # 🌍 Europe
-    country %in% c("albanian", "austrian", "belgian", "bosnian", "british",
-                   "bulgarian", "croatian", "czech", "czechoslovakian", "danish",
-                   "dutch", "estonian", "finnish", "french", "german", "greek",
-                   "hungarian", "icelandic", "irish", "italian", "latvian",
-                   "lithuanian", "luxembourgish", "macedonian", "norwegian",
-                   "polish", "portuguese", "romanian", "russian", "scottish",
-                   "serbian", "slovak", "slovenian", "spanish", "swedish",
-                   "swiss", "ukrainian", "yugoslav") ~ "Europe",
-    
-    # 🌏 Asia
-    country %in% c("afghan", "bangladeshi", "cambodian", "chinese", "emirati",
-                   "filipino", "georgian", "indian", "iranian", "israeli",
-                   "japanese", "kazakh", "kuwaiti", "lebanese", "malaysian",
-                   "pakistani", "palestinian", "singaporean", "south korean",
-                   "korean", "taiwanese", "thai", "turkish") ~ "Asia",
-    
-    # 🌍 Africa
-    country %in% c("algerian", "beninese", "burkinabe", "cameroonian",
-                   "congolese", "egyptian", "ethiopian", "ghanaian",
-                   "ivorian", "kenyan", "libyan", "malian", "moroccan",
-                   "namibian", "nigerian", "rwandan", "senegalese",
-                   "sierra leonean", "south african", "sudanese",
-                   "tanzanian", "tunisian", "ugandan", "zimbabwean") ~ "Africa",
-    
-    # 🌏 Oceania
-    country %in% c("australian", "new zealander") ~ "Oceania",
-    
-    # ❓ Missing / unknown
-    country %in% c("nationality unknown", "", NA, "unknown") ~ NA_character_,
-    
-    # fallback
-    TRUE ~ NA_character_
-  ))
-```
-
-```{r}
-moma_clean <- moma_clean %>%
-  mutate(
-    gender = factor(gender),
-    alive = factor(alive),   
-    region = factor(region),
-    department = factor(department),
-
-  )
-```
-
-```{r}
-mean(moma_clean$count)
-var(moma_clean$count)
-```
-
-# How does an artist’s living status (alive vs. deceased) relate to the number of works held in MoMA’s collection, after adjusting for gender, geographic origin, generation, and department?
-
-### Q1: Does being dead or alive affect the timing of the first acquisition by MoMa?
-=======
-In a simple linear regression model, living artists are estimated to have approximately 29% fewer works in MoMA’s collection compared to deceased artists. This difference is statistically significant (p < 0.001). However, the model explains only a small proportion of variation (R² = 0.0165), suggesting that other factors contribute substantially to the number of works held by the museum.
-
-```{r}
-#full model including additional predictors
 moma_model2 <- lm(log(count) ~ alive + gender + region + department,
-  data = moma)
+                  data = moma)
 summary(moma_model2)
 ```
 
+### Model 3
+
 ```{r}
-#full model including generation of artist as a predictor
 moma_model3 <- lm(log(count) ~ alive + gender + region + department + genx,
-  data = moma)
-summary(moma_model2)
-```
-```{r}
-exp(-0.323)
-```
-```{r}
-(1-exp(-0.323)) *100
-```
-After adjusting for gender, region, department, and generation, living artists are estimated to have about 27–28% fewer works in MoMA’s collection than deceased artists, on average.
-```{r}
-gendermale = 0.095
-(exp(gendermale) -1)* 100
+                  data = moma)
+summary(moma_model3)
 
+# Effect of being alive
+exp(coef(moma_model3)["aliveTRUE"])
+(1 - exp(coef(moma_model3)["aliveTRUE"])) * 100
+
+# Gender effect
+(exp(coef(moma_model3)["gendermale"]) - 1) * 100
+
+# Region Other effect
+(1 - exp(coef(moma_model3)["regionOther/Unknown"])) * 100
 ```
 
-Male artists are estimated to have about 10% more works than female artists on average, holding generation, region, department and living status constant. This difference is statistically significant (p < 0.01).
+### Model 4
+
 ```{r}
-regionOther = -0.724 
- ( 1 - exp(regionOther)) *100
-```
-There is limited evidence of systematic regional differences once other factors are controlled for, except for artists with unknown or less clearly categorized origins, who appear significantly underrepresented. Artists from “Other/Unknown” regions are estimated to have about 52% fewer works than those in the baseline region, holding other factors constant. This difference is statistically significant (p < 0.01). This may reflect structural marginalization in cataloging and recognition or data limitations. 
-
-Living artists are estimated to have approximately 27% fewer works in MoMA’s collection than deceased artists (p < 0.001). The magnitude of this effect remains largely unchanged after the inclusion of generational controls, suggesting that the observed difference is not driven solely by differences in artist age or career length.
-
-**Does the “alive vs deceased” gap differ between younger vs older artists?**
-```{r,include=FALSE}
-#introduce an interaction term between generation and being alive to see whether they are correlated
-moma_model4 <- lm(log(count) ~ alive * genx + gender + region + department, data = moma)
+moma_model4 <- lm(log(count) ~ alive * genx + gender + region + department,
+                  data = moma)
 summary(moma_model4)
 ```
-We tested whether the relationship between living status and number of works varies across generational cohorts by including an interaction between living status and generation. The interaction term was not statistically significant, suggesting that the difference between living and deceased artists is consistent across generations.
 
-```{r,include=FALSE}
-# interaction between gender and department. Included this interaction in final reflection because it is statistically significant
-moma_model5 <- lm(log(count) ~ gender * department + alive + region + genx, data = moma)
+### Model 5
+
+```{r}
+moma_model5 <- lm(log(count) ~ gender * department + alive + region + genx,
+                  data = moma)
 summary(moma_model5)
 ```
-```{r,include=FALSE}
-g = -0.09728 + 0.31869 
- ( exp(g) - 1)*100
-```
 
+### Model Comparison
 
-We tested whether gender differences in representation vary across departments by including an interaction between gender and department. The interaction term for Drawings & Prints was statistically significant, indicating that the gender gap differs across artistic fields. Specifically, male artists have approximately 25% more works than female artists in Drawings & Prints, while no significant gender difference is observed in other departments.
-
-**Model Evaluation**
-
-Adding gender, region, and department substantially improved model fit relative to a simple baseline model as reflected in the increase in R^2, while the inclusion of generation and interaction terms resulted in only marginal improvements.
 ```{r}
 model_comparison <- data.frame(
   Model = c("Model 1", "Model 2", "Model 3", "Model 4", "Model 5"),
@@ -315,27 +177,173 @@ model_comparison <- data.frame(
     summary(moma_model2)$adj.r.squared,
     summary(moma_model3)$adj.r.squared,
     summary(moma_model4)$adj.r.squared,
-    summary(moma_model5)$adj.r.squared))
-
-model_comparison
+    summary(moma_model5)$adj.r.squared
+  )
+)
 
 library(knitr)
-kable(model_comparison, caption = "Comparison of Model Fit (R-squared)")
+kable(model_comparison, caption = "Comparison of Model Fit (Adjusted R-squared)")
 ```
 
+**Figure 4: Model diagnostic checks for Model 3, including residual distribution, homoscedasticity, normality, and influential observations.**
+
 ```{r}
-# Started a check for Assumptions of linearity but i am not too confident in this. 
 library(performance)
+
+# Diagnostic plots
 check_model(moma_model3)
+
+```
+
+**Figure 5: Standard linear regression diagnostic plots for Model 3, including residuals vs fitted values, Q-Q plot, scale-location plot, and leverage diagnostics.**
+
+```{r}
 par(mfrow = c(2,2))
 plot(moma_model3)
 ```
-Diagnostic plots suggest that the assumptions of linear regression are reasonably satisfied, particularly after applying a log transformation to the outcome variable. While minor deviations from normality and constant variance are present, they are not severe. No strong multicollinearity was detected, and influential observations were retained due to their substantive relevance.
 
-1893 observations with missing values were excluded from the analysis, resulting in a reduced sample size
+### Confidence Intervals
 
+```{r}
+confint(moma_model3)
+```
 
+```{r}
+confint(moma_model3)["aliveTRUE", ]
+confint(moma_model3)["gendermale", ]
+confint(moma_model3)["regionOther/Unknown", ]
+```
 
+# Report
 
+### **Abstract**
 
->>>>>>> 22cb727d9dd6e900fc9f917bf94a6152c4adbf99
+The purpose of our analysis is to examine the relationship that artist characteristics specifically living status, gender and geographic origin, have on the number of works held in the collection of the Museum of Modern Art. Using publicly available MoMA artist data, we fit a series of multiple linear regression models with the log-transformed number of works as the response variable.
+
+We found evidence that living artists have significantly fewer works in the collection compared to deceased artists, even after controlling for gender, geographic region, generation, and department. Additionally, male artists are slightly overrepresented relative to female artists, though this difference varies across departments, with the largest disparity observed in Drawings and Prints. Regional differences were generally not statistically significant, with the exception of artists categorized as originating from “Other/Unknown” regions, who appear underrepresented.
+
+Overall, our results suggest that representation within the museum’s collection is shaped by artist characteristics and structural factors such as departmental classification, and that disparities persist even after accounting for generational differences.
+
+### **Introduction**
+
+Cultural institutions such as museums play a central role in shaping cultural discourse and public understanding of art. Museums do not simply display art; they actively construct meaning and cultural value \[\@duncan1995\]. The Museum’s evolving collection contains almost 200,000 works from around the world spanning the last 150 years. Collections like those of the Museum of Modern Art (MoMA) not only reflect artistic production but also institutional decisions about which artists and works are preserved, exhibited, and valued. As a result, patterns within museum collections can provide insight into questions of representation, recognition, and structural inequality in the art world. This aligns with the idea that “cultural institutions contribute to the reproduction of social hierarchies” \[\@bourdieu1984\]
+
+Prior research has shown that “the question of women’s absence from the canon is not about individual ability, but about institutional structures and opportunities” \[\@nochlin1971\]. However, less attention has been given to how these disparities interact with institutional factors such as departmental classification and artist career stage. Artists working in different media may be collected in systematically different ways, and representation may also vary depending on an artist’s stage of life or career. Understanding these dynamics is important for distinguishing differences in artistic output from institutional selection processes.
+
+In this project, we examine how the number of works held by MoMA varies with artist characteristics, including living status, gender, and geographic origin. We ask whether female artists have fewer works than male artists on average, whether artists from certain regions are underrepresented, and whether these patterns persist after accounting for generation and departmental differences.
+
+We test two main hypotheses. First, we hypothesize that living artists have fewer works in the collection than deceased artists. Second, we hypothesize that gender differences exist in the number of works held, and that these differences vary across departments. To explore this further, we incorporate interaction terms to assess whether representation differs systematically across artistic fields. Because the outcome variable is a count (number of works), a natural modeling approach would be count regression models such as Poisson or negative binomial regression. However, the data exhibit substantial right-skewness and overdispersion, violating key assumptions of the Poisson model. We therefore apply a log transformation to the outcome and estimate linear regression models as an approximation.
+
+The log transformation reduces skewness and stabilizes variance, making the linear model assumptions more plausible. Under this specification, coefficients can be interpreted approximately as percentage differences in the expected number of works across groups.
+
+We evaluate model assumptions using standard diagnostic plots **(Figures 4 and 5)**. Residuals versus fitted values show no strong evidence of systematic structure, suggesting that the linearity assumption is reasonable. The scale-location plot indicates some heteroscedasticity at extreme fitted values, though this is substantially reduced by the log transformation. Q-Q plots show approximate normality of residuals with mild deviations in the tails. Influence diagnostics (leverage and Cook’s distance) identify a small number of potentially influential observations, but excluding these observations does not meaningfully change the results. Overall, the model assumptions are reasonably satisfied for inference, though not perfectly met. All analyses were conducted in R and are fully reproducible using the provided Quarto (.qmd) file, including data cleaning, model fitting, and visualization steps.
+
+### **Data**
+
+The dataset used in this analysis consists of publicly available artist-level data from the Museum of Modern Art (MoMA) \[\@moma_collection\], accessed through the bayesrules package in R. The Museum’s website features 107,593 artworks from 28,332 artists. The data set was accessed through the *RDatasets* archive \[\@rdatasets\]. The original dataset contains 10,964 artists and includes information on the number of works attributed to each artist, gender, country of origin, departmental classification, living status, and generation (born before or after 1965).
+
+After restricting the sample to observations with complete data on the variables used in the analysis (including gender, region, department, living status, and generation), the final analytic sample consists of 9,000 artists. This research dataset contains 160,713 records, representing all of the works that have been accessioned into MoMA’s collection and cataloged in our database. This reduction is primarily driven by missing values in categorical variables such as gender and geographic origin.
+
+We use listwise deletion to handle missing data, ensuring consistency across all model specifications. While this approach simplifies estimation and interpretation, it substantially reduces the sample size and may introduce bias if the missingness is not random.
+
+### **Variables**
+
+The response variable in this analysis is the number of works attributed to each artist in the Museum of Modern Art (MoMA) collection. We apply a logarithmic transformation to this variable, modeling log(count), in order to reduce skewness and improve adherence to linear regression assumptions.
+
+The explanatory variables included in the analysis are as follows:
+
+**Living status (alive):** A binary indicator equal to 1 if the artist is living and 0 if deceased.
+
+**Gender (gender):** A categorical variable with levels male, female, and non-binary, used to assess differences in representation across gender categories.
+
+**Geographic region (region):** A categorical variable derived from country of origin and grouped into broader regions (e.g., Europe, Asia, Africa, North America), allowing for comparison across geographic groupings.
+
+**Generation (genx):** A binary indicator for whether an artist was born before or after 1965, used as a proxy for career stage and generational cohort.
+
+**Department (department):** A categorical variable indicating the artistic department (e.g., Painting & Sculpture, Photography, Drawings & Prints), capturing institutional differences in how works are collected and classified.
+
+### **Model Choice**
+
+A log transformation is commonly used in applied regression settings to address skewness in count-like outcomes. Thus, we estimate a sequence of multiple linear regression models with log(count) as the outcome variable. The models are constructed in increasing complexity, beginning with a baseline specification that includes only living status and progressively adding additional covariates to control for potential confounding factors.
+
+Subsequent models incorporate gender, geographic region, department, and generation to account for observable differences in artist characteristics and institutional classification. This stepwise approach allows us to assess the robustness of key relationships as additional controls are introduced.
+
+To examine heterogeneity in effects across institutional contexts, we also estimate interaction models. In particular, we include an interaction between gender and department to assess whether gender differences in representation vary across artistic fields.
+
+The full set of models is specified as follows:
+
+**Model 1:** living status only
+
+**Model 2:** adds gender, region, and department
+
+**Model 3:** adds generation
+
+**Model 4:** includes an interaction between living status and generation
+
+**Model 5:** includes an interaction between gender and department
+
+### **Exploratory Analysis** 
+
+To better understand the distribution of the outcome variable and relationships between key predictors, we constructed several exploratory visualizations.
+
+A boxplot of the number of works by living status (on a log scale) **(Figure 2)** indicates that deceased artists have slightly higher median counts and greater variability than living artists, along with a larger number of high-value outliers. This pattern provides preliminary support for the hypothesis that deceased artists are more extensively represented in the MoMA collection.
+
+A boxplot by geographic region **(Figure 3)** shows that artists from Europe and North America generally have higher median counts and more extreme outliers compared to other regions. However, there is substantial overlap in distributions across regions, suggesting that geographic differences may be modest once other covariates are taken into account.
+
+Finally, a boxplot of counts by department and gender **(Figure 1)** reveals substantial variation across institutional categories. Departments such as Drawings & Prints and Photography exhibit higher dispersion and larger counts overall. Within several departments, male artists tend to have slightly higher median counts than female artists, particularly in Drawings & Prints. These patterns motivate the inclusion of interaction terms between gender and department in subsequent regression models.
+
+### Results
+
+We estimated a series of linear regression models with the log-transformed number of works in the MoMA collection as the outcome variable. Our primary model (Model 3) includes living status, gender, geographic region, department, and generation as explanatory variables.
+
+After adjusting for all covariates, living status is strongly associated with representation in the collection. The coefficient on *alive* is −0.323 (p \< 0.001), indicating that, on average, living artists have approximately **28% fewer works** in the collection than deceased artists (95% CI: 23% to 32% fewer), holding all other variables constant. This is the largest and most consistent effect across all model specifications.
+
+Gender is also associated with differences in representation. The coefficient for male artists is 0.095 (p = 0.007), corresponding to approximately **10% more works** compared to female artists (95% CI: 3% to 18% more), controlling for other factors. The coefficient for non-binary artists is not statistically distinguishable from zero and is estimated imprecisely, likely due to the small number of observations in this category.
+
+Geographic region shows limited evidence of systematic differences after adjustment. Most regional coefficients are not statistically significant, and their confidence intervals include zero. However, artists categorized as originating from “Other/Unknown” regions have significantly lower representation (−0.724, p = 0.001), corresponding to approximately **52% fewer works** relative to the reference region. This suggests that incomplete or ambiguous geographic classification is associated with substantially lower representation.
+
+Departmental differences are large in magnitude and highly statistically significant, indicating substantial variation in how works are accumulated across artistic media. Relative to the reference department, artists in Drawings & Prints and Photography have significantly higher expected counts, while those in Painting & Sculpture have lower counts. These differences likely reflect institutional acquisition practices, such as the tendency for certain media (e.g., prints or photographs) to be collected in multiples.
+
+The coefficient for generation (genx) is not statistically significant (p = 0.225), and its confidence interval includes zero, suggesting no strong evidence of generational differences in representation once other covariates are taken into account.
+
+To examine whether gender differences vary across institutional contexts, we estimated an interaction model between gender and department (Model 5). The interaction between male gender and Drawings & Prints is positive and statistically significant (p = 0.005), indicating that the gender gap is larger in this department than in the reference category. Specifically, within Drawings & Prints, male artists are estimated to have approximately **25% more works** than female artists, after controlling for other variables. No statistically significant gender differences are detected in other departments, suggesting that gender disparities are concentrated within specific areas of the collection rather than uniform across all media.
+
+Model fit improves substantially as additional covariates are included. The adjusted R² increases from 0.016 in the baseline model (Model 1) to approximately 0.074 in Models 2–4 and 0.075 in Model 5. While this represents a meaningful improvement, the overall explanatory power remains modest, indicating that a large proportion of variation in the number of works is not explained by the observed variables.
+
+Overall, these results indicate that representation in the MoMA collection is strongly associated with living status and varies across gender and department, while geographic region and generation play a more limited role after adjustment. Importantly, the concentration of gender differences within specific departments highlights the importance of institutional context in shaping patterns of representation.
+
+### **Discussion**
+
+In our primary analysis, we examined whether artist characteristics such as living status, gender, and geographic origin are associated with representation in the collection of the Museum of Modern Art. Our results provide strong evidence that living artists have fewer works in the collection than deceased artists, even after controlling for gender, region, generation, and department. This finding is consistent with the idea that museum collections accumulate works over time and that artists may gain recognition and institutional visibility posthumously.
+
+Across all models, explanatory power increases substantially after adding covariates (Adjusted R² increases from 0.016 in Model 1 to \~0.075 in full models). However, the overall R² remains low, suggesting that a large proportion of variation in the number of works is not explained by the included predictors.
+
+We also find evidence of a modest gender disparity in representation, with male artists having approximately 10% more works than female artists on average. Importantly, this disparity is not uniform across artistic fields. Our interaction analysis shows that the gender gap is concentrated in specific departments, particularly Drawings & Prints, suggesting that structural differences across media play an important role in shaping representation.
+
+In contrast, we find limited evidence of systematic regional differences once other factors are controlled for. The only exception is the “Other/Unknown” category, which is associated with significantly fewer works. This may reflect limitations in data classification or broader patterns of marginalization in how artists are documented and recognized.
+
+Our analysis also indicates that generational differences do not independently explain variation in representation once living status is taken into account. This suggests that the observed differences between living and deceased artists are not solely driven by age or career stage, but may instead reflect institutional dynamics such as acquisition patterns, career length, and posthumous recognition.
+
+Several limitations should be noted. First, the use of a linear regression model on log-transformed count data is an approximation; alternative models such as Poisson or negative binomial regression may be more appropriate. Second, observations with missing data were excluded, which may introduce bias if missingness is not random. Future work could also consider artist level random effects or hierarchical models to account for clustering within departments.
+
+Overall, our findings suggest that representation within museum collections is shaped by a combination of artist characteristics and institutional structures, and that disparities persist even after accounting for observable factors. Further research is needed to better understand the mechanisms driving these patterns and what solutions have been put in place to address these issues.
+
+### **Limitations and Looking Forward** 
+
+Our model assumes a uniform relationship across artists within each category, which likely oversimplifies institutional collecting processes. In particular, differences in departmental practices—for example, the tendency for prints and photography to be acquired in larger multiples—suggest substantial heterogeneity in how works are accumulated across media. While we include department as a categorical control, more flexible specifications that better capture within-department variation may improve model fit.
+
+Diagnostic checks suggest that linear regression assumptions are broadly reasonable after log transformation, although some departures from normality and constant variance remain in the tails. The relatively low R² values indicate that most variation in the number of works is not explained by the observed covariates. This is not unexpected, as museum acquisition patterns are likely shaped by additional unobserved factors such as exhibition history, curatorial decision-making, and broader historical context, which are not captured in the dataset.
+
+Future research could extend this analysis to multiple museum collections to assess whether these patterns are specific to MoMA or reflect broader institutional dynamics in contemporary art curation. Such comparative work would help distinguish museum-specific acquisition practices from more general structural inequalities in how artists are represented across institutions.
+
+## References
+
+Arel-Bundock, V. (n.d.). *Rdatasets: Collection of datasets for statistical analysis in R*. <https://vincentarelbundock.github.io/Rdatasets/datasets.html>
+
+Bourdieu, P. (1984). *Distinction: A social critique of the judgement of taste*. Harvard University Press.
+
+Duncan, C. (1995). *Civilizing rituals: Inside public art museums*. Routledge.
+
+Museum of Modern Art. (n.d.). *MoMA Collection Dataset*. <https://github.com/MuseumofModernArt/collection>
+
+Nochlin, L. (1971). Why have there been no great women artists? *ARTnews*.
