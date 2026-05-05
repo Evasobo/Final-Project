@@ -3,6 +3,8 @@ title: "Final"
 format: html
 ---
 
+## Clean Data
+
 ```{r}
 #install.packages("bayesrules")
 library(bayesrules)
@@ -17,3 +19,76 @@ moma_clean <- moma %>%
 
 ```
 
+```{r}
+#install.packages("countrycode")  # run once
+library(countrycode)
+```
+
+```{r}
+moma_clean <- moma_clean %>%
+  mutate(region = case_when(
+    
+    # 🌎 North America
+    country %in% c("american", "canadian", "canadian inuit", "mexican", "costa rican",
+                   "cuban", "guatemalan", "haitian", "nicaraguan", "salvadoran",
+                   "panamanian", "bahamian", "brazilian", "brazilian", "bahamian") ~ "North America",
+    
+    # 🌎 South America
+    country %in% c("argentine", "bolivian", "chilean", "colombian", "ecuadorian",
+                   "guyanese", "paraguayan", "peruvian", "uruguayan", "venezuelan") ~ "South America",
+    
+    # 🌍 Europe
+    country %in% c("albanian", "austrian", "belgian", "bosnian", "british",
+                   "bulgarian", "croatian", "czech", "czechoslovakian", "danish",
+                   "dutch", "estonian", "finnish", "french", "german", "greek",
+                   "hungarian", "icelandic", "irish", "italian", "latvian",
+                   "lithuanian", "luxembourgish", "macedonian", "norwegian",
+                   "polish", "portuguese", "romanian", "russian", "scottish",
+                   "serbian", "slovak", "slovenian", "spanish", "swedish",
+                   "swiss", "ukrainian", "yugoslav") ~ "Europe",
+    
+    # 🌏 Asia
+    country %in% c("afghan", "bangladeshi", "cambodian", "chinese", "emirati",
+                   "filipino", "georgian", "indian", "iranian", "israeli",
+                   "japanese", "kazakh", "kuwaiti", "lebanese", "malaysian",
+                   "pakistani", "palestinian", "singaporean", "south korean",
+                   "korean", "taiwanese", "thai", "turkish") ~ "Asia",
+    
+    # 🌍 Africa
+    country %in% c("algerian", "beninese", "burkinabe", "cameroonian",
+                   "congolese", "egyptian", "ethiopian", "ghanaian",
+                   "ivorian", "kenyan", "libyan", "malian", "moroccan",
+                   "namibian", "nigerian", "rwandan", "senegalese",
+                   "sierra leonean", "south african", "sudanese",
+                   "tanzanian", "tunisian", "ugandan", "zimbabwean") ~ "Africa",
+    
+    # 🌏 Oceania
+    country %in% c("australian", "new zealander") ~ "Oceania",
+    
+    # ❓ Missing / unknown
+    country %in% c("nationality unknown", "", NA, "unknown") ~ NA_character_,
+    
+    # fallback
+    TRUE ~ NA_character_
+  ))
+```
+
+```{r}
+moma_clean <- moma_clean %>%
+  mutate(
+    gender = factor(gender),
+    alive = factor(alive),   
+    region = factor(region),
+    department = factor(department),
+
+  )
+```
+
+```{r}
+mean(moma_clean$count)
+var(moma_clean$count)
+```
+
+# How does an artist’s living status (alive vs. deceased) relate to the number of works held in MoMA’s collection, after adjusting for gender, geographic origin, generation, and department?
+
+### Q1: Does being dead or alive affect the timing of the first acquisition by MoMa?
