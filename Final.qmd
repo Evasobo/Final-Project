@@ -17,3 +17,14 @@ moma_clean <- moma %>%
 
 ```
 
+```{r}
+#Exploratory plot 1
+ggplot(moma, aes(y = department, x = count, fill = gender)) +
+  geom_boxplot() + scale_x_log10()
+```
+
+```{r}
+
+```
+
+
